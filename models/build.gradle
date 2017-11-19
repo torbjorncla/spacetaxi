@@ -1,0 +1,39 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "http://packages.confluent.io/maven" }
+    }
+    dependencies {
+        classpath("com.commercehub.gradle.plugin:gradle-avro-plugin:0.11.0")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: "com.commercehub.gradle.plugin.avro"
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "http://packages.confluent.io/maven/" }
+}
+
+dependencies {
+    compile("org.apache.avro:avro:1.8.2")
+    compile("io.confluent:kafka-streams-avro-serde:3.3.0")
+    compile("io.confluent:kafka-avro-serializer:3.3.0")
+    compile("io.confluent:kafka-schema-registry-client:3.3.0")
+}
+
+avro {
+    createSetters = false
+    fieldVisibility = "PRIVATE"
+}
+
+task generateAvro(type: com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {
+    outputDir = file("src/main/java/se/callistaenterprise/cadec/stream/model")
+}

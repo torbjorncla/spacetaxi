@@ -1,0 +1,46 @@
+plugins {
+    id 'net.ltgt.apt' version '0.10'
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "se.callistaenterprise.cadec.stream.App"
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "http://packages.confluent.io/maven/" }
+}
+
+dependencies {
+
+    compile project(':models')
+
+    compile 'org.apache.kafka:connect-api:0.11.0.1'
+
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'ch.qos.logback:logback-core:1.2.3'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+
+    compile 'com.google.code.gson:gson:2.8.2'
+
+    compile 'io.netty:netty-all:4.1.16.Final'
+    testCompile 'junit:junit:4.12'
+
+    compile 'com.google.guava:guava:23.0'
+
+    compile("org.apache.avro:avro:1.8.2")
+
+    compile("io.confluent:kafka-streams-avro-serde:3.3.0")
+    compile("io.confluent:kafka-connect-avro-converter:3.3.0")
+    compile("io.confluent:kafka-avro-serializer:3.3.0")
+    compile("io.confluent:kafka-schema-registry-client:3.3.0")
+
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+    apt "org.projectlombok:lombok:1.16.18"
+}

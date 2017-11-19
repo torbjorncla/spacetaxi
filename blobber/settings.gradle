@@ -1,0 +1,4 @@
+include ':models'
+project(':models').projectDir = new File(settingsDir, '../models')
+
+rootProject.name = 'blobber'

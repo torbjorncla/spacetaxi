@@ -1,0 +1,9 @@
+{
+    "name": "BlobberControl",
+    "namespace": "se.callistaenterprise.cadec.stream.model",
+    "type": "record",
+    "fields" : [
+        {"name": "id", "type": "string"},
+        {"name": "amount", "type": "int"}
+    ]
+}

@@ -1,0 +1,8 @@
+kafka:
+  brokers: localhost:19092, localhost:29092, localhost:39092
+  schema_registry: localhost:8081
+  topics:
+   dummy.in: SocketMessageSource
+   dummy.out: dummyOut
+   blobber.in: BlobberControl
+   blobber.out: Blobber

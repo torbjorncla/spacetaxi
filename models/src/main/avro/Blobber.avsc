@@ -1,0 +1,16 @@
+{
+    "name": "Blobber",
+    "namespace": "se.callistaenterprise.cadec.stream.model",
+    "type": "record",
+    "fields" : [
+        {"name": "id", "type": "long"},
+        {"name": "size", "type": "int"},
+        {"name": "speed", "type": "int"},
+        {"name": "color", "type": "string"},
+        {"name": "pos", "type": {
+            "name": "x", "type": "int",
+            "name": "y", "type": "int"
+            }
+        }
+    ]
+}

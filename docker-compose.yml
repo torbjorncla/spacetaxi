@@ -1,0 +1,99 @@
+---
+version: '2'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper
+    extra_hosts:
+      - "moby:127.0.0.1"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+
+  kafka1:
+     image: confluentinc/cp-kafka:latest
+     hostname: kafka1
+     extra_hosts:
+       - "moby:127.0.0.1"
+     depends_on:
+       - zookeeper
+     ports:
+       - "19092:9092"
+     environment:
+       KAFKA_BROKER_ID: 1
+       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka1:9092"
+
+  kafka2:
+     image: confluentinc/cp-kafka:latest
+     hostname: kafka2
+     extra_hosts:
+       - "moby:127.0.0.1"
+     depends_on:
+       - zookeeper
+     ports:
+       - "29092:9092"
+     environment:
+       KAFKA_BROKER_ID: 2
+       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka2:9092"
+
+  kafka3:
+     image: confluentinc/cp-kafka:latest
+     hostname: kafka3
+     extra_hosts:
+       - "moby:127.0.0.1"
+     depends_on:
+       - zookeeper
+     ports:
+       - "39092:9092"
+     environment:
+       KAFKA_BROKER_ID: 3
+       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka3:9092"
+
+  schemaregistry:
+    image: confluentinc/cp-schema-registry
+    hostname: schemaregistry
+    extra_hosts:
+      - "moby:127.0.0.1"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: "schemaregistry"
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+    ports:
+      - "18081:8081"
+    depends_on:
+      - zookeeper
+      - kafka1
+      - kafka2
+      - kafka3
+
+  websocket_connect:
+    image: websocket-connect:latest
+    extra_hosts:
+      - "moby:127.0.0.1"
+    depends_on:
+      - zookeeper
+      - kafka1
+      - kafka2
+      - kafka3
+    ports:
+      - "9084:8084"
+
+  blobber:
+    image: blobber:latest
+    extra_hosts:
+      - "moby:127.0.0.1"
+    depends_on:
+      - zookeeper
+      - kafka1
+      - kafka2
+      - kafka3
+    ports:
+      - "9080:8080"
+    environment:
+      KAFKA_BROKERS: "kafka1:9092, kafka2:9092, kafka3:9092"
+      KAFKA_SCHEMA_REGISTRY: "http://schemaregistry:8081"

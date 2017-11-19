@@ -1,0 +1,6 @@
+include 'dummy'
+include 'websocket-connect'
+include 'blobber'
+include 'models'
+
+rootProject.name = 'apps'
